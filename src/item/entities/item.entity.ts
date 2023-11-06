@@ -9,13 +9,6 @@ export class Item extends Model<Item> {
         autoIncrement: true,
     })
     id: number;
-
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: true,
-    })
-    author_id: number;
-
     @Column({
         type: DataType.STRING(50),
         allowNull: true,
@@ -81,7 +74,7 @@ export class Item extends Model<Item> {
         allowNull: true,
     })
     deleted_at: Date;
-    // 1 -n with item_chap
+    
      @HasMany(() => ItemChap)
         item_chaps: ItemChap[];
 }

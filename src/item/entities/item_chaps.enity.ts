@@ -10,44 +10,20 @@ export class ItemChap extends Model<ItemChap> {
     })
     id: number;
 
+    @ForeignKey(() => Item)
     @Column({
         type: DataType.INTEGER,
         allowNull: true,
     })
     item_id: number;
+    @BelongsTo(() => Item)
+    item: Item;
 
     @Column({
         type: DataType.STRING(50),
         allowNull: true,
     })
     name: string;
-
-    // @Column({
-    //     type: DataType.STRING(500),
-    //     allowNull: true,
-    // })
-    // description: string;
-
-    // @Column({
-    //     type: DataType.STRING(150),
-    //     allowNull: true,
-    // })
-    // image: string;
-
-    // @Column({
-    //     type: DataType.BIGINT,
-    //     allowNull: true,
-    //     defaultValue: 0,
-    // })
-    // total_like: number;
-
-    // @Column({
-    //     type: DataType.BIGINT,
-    //     allowNull: true,
-    //     defaultValue: 0,
-    // })
-    // total_comment: number;
-
     @Column({
         type: DataType.INTEGER,
         allowNull: true,
@@ -81,9 +57,7 @@ export class ItemChap extends Model<ItemChap> {
         allowNull: true,
     })
     deleted_at: Date;
-    @BelongsTo(() => Item)
-    item: Item;
-    @ForeignKey(() => Item)
-    @Column
-    itemId: number
+    // @ForeignKey(() => Item)
+    // @Column
+    // itemId: number
 }

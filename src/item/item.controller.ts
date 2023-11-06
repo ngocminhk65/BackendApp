@@ -17,9 +17,21 @@ export class ItemController {
   }
 
   @Get('detail/:id')
-  findOne(@Param('id') id: string) {
-    return this.itemService.findOne(+id);
-  }
+ async findOne(@Param('id') id: string) {
+    const data = await this.itemService.findOne(+id);
+    if (!data) {
+      return {
+        status: 404,
+        success: false,
+        message: 'Not found',
+      };
+      }
+      return {
+        status: 200,
+        success: true,
+        data,
+      };
+    }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
