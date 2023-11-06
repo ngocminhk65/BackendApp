@@ -1,8 +1,8 @@
-import { ItemChap } from './item_chaps.enity';
+import { Item_chaps } from "./item_chaps.enity";
 
 export const ItemProvider = [
   {
     provide: 'ITEM_CHAP_REPOSITORY',
-    useValue: ItemChap,
+    useValue: Item_chaps,
   },
 ];

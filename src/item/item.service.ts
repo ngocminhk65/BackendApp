@@ -1,7 +1,7 @@
 // import { InjectModel } from "@nestjs/sequelize";
 import { Item } from "./entities/item.entity";
 import { Injectable,Inject  } from "@nestjs/common";
-import { ItemChap } from "./entities/item_chaps.enity";
+import { Item_chaps } from "./entities/item_chaps.enity";
 @Injectable()
 export class ItemService {
   constructor(
@@ -26,6 +26,6 @@ export class ItemService {
 
   async findOne(id: number) {
   return this.itemRepository.findOne({ where: { id: id }
-  ,include:[ItemChap] });
+  ,include:[Item_chaps] });
   }
 }

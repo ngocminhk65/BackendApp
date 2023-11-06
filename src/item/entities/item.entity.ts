@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
-import { ItemChap } from './item_chaps.enity';
+import { Item_chaps } from './item_chaps.enity';
 
 @Table
 export class Item extends Model<Item> {
@@ -74,7 +74,7 @@ export class Item extends Model<Item> {
         allowNull: true,
     })
     deleted_at: Date;
-    
-     @HasMany(() => ItemChap)
-        item_chaps: ItemChap[];
+
+     @HasMany(() => Item_chaps)
+        item_chaps: Item_chaps[];
 }

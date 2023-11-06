@@ -1,13 +1,13 @@
 'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('item_categorys', {
-        id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
+      id: {
+        allowNull: false,
         autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       item_id: {
         type: Sequelize.INTEGER,
@@ -17,29 +17,23 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      created_at: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      },
       updated_at: {
-        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+      },
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       deleted_at: {
         type: Sequelize.DATE,
-        allowNull: true,
-      },
+        defaultValue: null,
+      }
     });
   },
-
-  async down (queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('item_categorys');
   }
 };

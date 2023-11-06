@@ -2,20 +2,24 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('item_chap_images', {
+    await queryInterface.createTable('reports', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      chap_id: {
+      comment_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
-      image_path: {
-        type: Sequelize.STRING(150),
-        allowNull: false,
+      user_report: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      content_report: {
+        type: Sequelize.STRING(255),
+        allowNull: true,
       },
       updated_at: {
         allowNull: false,
@@ -30,14 +34,10 @@ module.exports = {
       deleted_at: {
         type: Sequelize.DATE,
         defaultValue: null,
-      },
-      orders: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
+      }
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('item_chap_images');
+    await queryInterface.dropTable('reports');
   }
 };

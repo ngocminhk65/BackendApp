@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('authors', {
+    await queryInterface.createTable('assignments', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,15 +10,19 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING(50),
-        allowNull: true,
+        type: Sequelize.STRING,
+        allowNull : true
       },
-      item_id: {
+      user_id: {
+        type: Sequelize.INTEGER,
+        allowNull : true
+      },
+      progress: {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
-      image: {
-        type: Sequelize.STRING(150),
+      image_path: {
+        type: Sequelize.STRING,
         allowNull: true,
       },
       created_at: {
@@ -38,6 +42,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('authors');
+    await queryInterface.dropTable('assignments');
   }
 };

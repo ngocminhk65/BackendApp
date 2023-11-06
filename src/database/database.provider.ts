@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import { Item } from 'src/item/entities/item.entity';
-import { ItemChap } from 'src/item/entities/item_chaps.enity';
+import { Item_chaps } from 'src/item/entities/item_chaps.enity';
 
 export const databaseProviders = [
   {
@@ -17,7 +17,7 @@ export const databaseProviders = [
           timestamps : false
         }
       });
-      sequelize.addModels([Item,ItemChap]);
+      sequelize.addModels([Item,Item_chaps]);
       await sequelize.sync();
       return sequelize;
     },

@@ -2,7 +2,7 @@ import { Table, Column, Model, DataType, BelongsTo, ForeignKey } from 'sequelize
 import { Item } from './item.entity';
 
 @Table
-export class ItemChap extends Model<ItemChap> {
+export class Item_chaps extends Model<Item_chaps> {
     @Column({
         type: DataType.INTEGER,
         primaryKey: true,
@@ -29,7 +29,7 @@ export class ItemChap extends Model<ItemChap> {
         allowNull: true,
         defaultValue: 0,
     })
-    order: number;
+    orders: number;
 
     @Column({
         type: DataType.TINYINT,

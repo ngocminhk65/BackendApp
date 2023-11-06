@@ -2,20 +2,20 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('item_chap_images', {
+    await queryInterface.createTable('permission', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      chap_id: {
+      identification_code: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
-      image_path: {
-        type: Sequelize.STRING(150),
-        allowNull: false,
+      user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
       },
       updated_at: {
         allowNull: false,
@@ -28,16 +28,11 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       deleted_at: {
-        type: Sequelize.DATE,
-        defaultValue: null,
-      },
-      orders: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
+        type: Sequelize.DATE
+      }
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('item_chap_images');
+    await queryInterface.dropTable('permission');
   }
 };
