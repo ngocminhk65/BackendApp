@@ -3,11 +3,13 @@ import { ItemService } from './item.service';
 import { ItemController } from './item.controller';
 import { DatabaseModule } from 'src/database/database.module';
 import { ItemProvider } from './entities/item.provider';
+import { ItemChapImageProvider } from './entities/item_chap_images.provider';
+import { ItemChapProvider } from './entities/item_chaps.provider';
 
 @Module({
   imports : [DatabaseModule],
   controllers: [ItemController],
   providers: [ItemService,
-  ...ItemProvider],
+  ...ItemProvider,...ItemChapImageProvider,...ItemChapProvider],
 })
 export class ItemModule {}

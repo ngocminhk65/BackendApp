@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, BelongsTo, ForeignKey, HasMany } from 'sequelize-typescript';
 import { Item } from './item.entity';
+import { Item_chap_images } from './item_chap_images.enity';
 
 @Table
 export class Item_chaps extends Model<Item_chaps> {
@@ -57,6 +58,9 @@ export class Item_chaps extends Model<Item_chaps> {
         allowNull: true,
     })
     deleted_at: Date;
+
+    @HasMany(() => Item_chap_images)
+    images: Item_chap_images[];
     // @ForeignKey(() => Item)
     // @Column
     // itemId: number
