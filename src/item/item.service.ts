@@ -16,7 +16,7 @@ export class ItemService {
     return this.itemRepository.findAll();
   }
 
-  
+
   // find by name or description
   async find (searchParam) {
     const data = await this.itemRepository.findAll({
@@ -27,6 +27,7 @@ export class ItemService {
         ],
       },
     });
+    return data;
   }
 
 
