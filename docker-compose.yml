@@ -37,7 +37,7 @@ services:
     entrypoint: sh
     command: -c "
       mkdir -p /data/.minio.sys/buckets;
-      /opt/bin/minio server /data --console-address :33023;
+      minio server /data --console-address :33023;
       "
     volumes:
       - ./minio:/data
