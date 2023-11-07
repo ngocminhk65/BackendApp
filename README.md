@@ -14,3 +14,7 @@ npx sequelize-cli db:migrate
 ```
 seed database : 
 Run file develop.sql in seeder.
+run backend:
+```
+npm start dev:debug
+```
