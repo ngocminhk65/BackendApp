@@ -4,7 +4,7 @@ def increase_chap_id(sql):
     match = re.search(r'\((\d+),', sql)
     if match:
         old_chap_id = int(match.group(1))
-        new_chap_id = old_chap_id + 43
+        new_chap_id = old_chap_id + 64
         sql = sql.replace(f'({old_chap_id},', f'({new_chap_id},')
     return sql
 
