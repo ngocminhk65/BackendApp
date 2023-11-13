@@ -3,59 +3,66 @@ import {
   Column,
   Model,
   DataType,
-  HasMany,
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { Item_chaps } from './item_chaps.enity';
+import { User } from 'src/auth/user.enity';
 
-@Table
-export class Item_chap_images extends Model<Item_chap_images> {
+@Table({ tableName: 'comments' })
+export class Comment extends Model<Comment> {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
     autoIncrement: true,
+    allowNull: false,
   })
   id: number;
 
-  @ForeignKey(() => Item_chaps)
   @Column({
     type: DataType.INTEGER,
     allowNull: true,
   })
   chap_id: number;
-  @BelongsTo(() => Item_chaps)
-  Item_chaps: Item_chaps;
 
-  @Column({
-    type: DataType.STRING(255),
-    allowNull: true,
-  })
-  image_path: string;
-
+  @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
     allowNull: true,
   })
-  orders: number;
+  user_id: number;
 
   @Column({
-    type: DataType.DATE,
-    allowNull: false,
-    defaultValue: DataType.NOW,
+    type: DataType.TINYINT,
+    allowNull: true,
   })
-  created_at: Date;
+  is_delete: number;
+
+  @Column({
+    type: DataType.STRING(500),
+    allowNull: true,
+  })
+  content: string;
 
   @Column({
     type: DataType.DATE,
     allowNull: false,
-    defaultValue: DataType.NOW,
+    defaultValue: Date.now(),
   })
   updated_at: Date;
 
   @Column({
     type: DataType.DATE,
-    allowNull: true,
+    allowNull: false,
+    defaultValue: Date.now(),
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    defaultValue: null,
   })
   deleted_at: Date;
+
+  @BelongsTo(() => User)
+  user: User;
 }

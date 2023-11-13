@@ -22,7 +22,7 @@ module.exports = {
         allowNull: true,
       },
       content: {
-        type: Sequelize.STRING(255),
+        type: Sequelize.STRING(500),
         allowNull: true,
       },
       updated_at: {

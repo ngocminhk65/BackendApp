@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { Comment } from 'src/comments/entities/comment.entity';
 
 @Table
 export class User extends Model<User> {
@@ -47,4 +48,7 @@ export class User extends Model<User> {
     defaultValue: DataType.NOW,
   })
   updatedAt: Date;
+
+  @HasMany(() => Comment)
+  User: Comment[];
 }

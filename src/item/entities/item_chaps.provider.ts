@@ -1,4 +1,4 @@
-import { Item_chaps } from "./item_chaps.enity";
+import { Item_chaps } from './item_chaps.enity';
 
 export const ItemChapProvider = [
   {

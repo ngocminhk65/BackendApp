@@ -1,4 +1,4 @@
-import { User } from "./user.enity";
+import { User } from './user.enity';
 
 export const UserProvider = [
   {

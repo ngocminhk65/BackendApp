@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ItemService } from './item.service';
 import { CreateItemDto } from './dto/create-item.dto';
 
@@ -15,12 +23,12 @@ export class ItemController {
         success: false,
         message: 'Not found',
       };
-      }
-      return {
-        status: 200,
-        success: true,
-        data,
-      };
+    }
+    return {
+      status: 200,
+      success: true,
+      data,
+    };
   }
 
   @Get('find/:searchParam')
@@ -32,14 +40,13 @@ export class ItemController {
         success: false,
         message: 'Not found',
       };
-      }
-      return {
-        status: 200,
-        success: true,
-        data,
-      };
+    }
+    return {
+      status: 200,
+      success: true,
+      data,
+    };
   }
-
 
   @Get('chap/:id')
   async getChapDetail(@Param('id') id: string) {
@@ -50,17 +57,16 @@ export class ItemController {
         success: false,
         message: 'Not found',
       };
-      }
-      return {
-        status: 200,
-        success: true,
-        data,
-      };
+    }
+    return {
+      status: 200,
+      success: true,
+      data,
+    };
   }
 
-
   @Get('detail/:id')
- async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     const data = await this.itemService.findOne(+id);
     if (!data) {
       return {
@@ -68,11 +74,11 @@ export class ItemController {
         success: false,
         message: 'Not found',
       };
-      }
-      return {
-        status: 200,
-        success: true,
-        data,
-      };
     }
+    return {
+      status: 200,
+      success: true,
+      data,
+    };
+  }
 }

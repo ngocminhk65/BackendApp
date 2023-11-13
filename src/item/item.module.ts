@@ -7,9 +7,14 @@ import { ItemChapImageProvider } from './entities/item_chap_images.provider';
 import { ItemChapProvider } from './entities/item_chaps.provider';
 
 @Module({
-  imports : [DatabaseModule],
+  imports: [DatabaseModule],
   controllers: [ItemController],
-  providers: [ItemService,
-  ...ItemProvider,...ItemChapImageProvider,...ItemChapProvider],
+  providers: [
+    ItemService,
+    ...ItemProvider,
+    ...ItemChapImageProvider,
+    ...ItemChapProvider,
+  ],
+  exports: [...ItemProvider, ...ItemChapImageProvider, ...ItemChapProvider],
 })
 export class ItemModule {}

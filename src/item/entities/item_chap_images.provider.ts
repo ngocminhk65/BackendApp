@@ -1,4 +1,4 @@
-import { Item_chap_images } from "./item_chap_images.enity";
+import { Item_chap_images } from './item_chap_images.enity';
 
 export const ItemChapImageProvider = [
   {
