@@ -1,34 +1,37 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards,Request } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
-import { CreateFavoriteDto } from './dto/create-favorite.dto';
-import { UpdateFavoriteDto } from './dto/update-favorite.dto';
+import { JwtStrategy } from 'src/auth/jwt.strategy';
+import { AuthService } from 'src/auth/auth.service';
 
+@UseGuards(JwtStrategy)
 @Controller('favorites')
 export class FavoritesController {
-  constructor(private readonly favoritesService: FavoritesService) {}
+  constructor(private readonly favoritesService: FavoritesService, private readonly authService: AuthService) {}
 
-  @Post()
-  create(@Body() createFavoriteDto: CreateFavoriteDto) {
-    return this.favoritesService.create(createFavoriteDto);
+  @Post('item/:id')
+  async create(@Body() body:any,@Param('id') id:string , @Request() req: any) {
+    const token = req.headers.authorization.split(' ')[1];
+    const user = await this.authService.getUserByToken(token);
+    if (!user) {
+      return {
+        message: 'JWT token is invalid',
+        status: 401,
+      };
+    }
+    return this.favoritesService.create(id,user);
   }
 
   @Get()
-  findAll() {
-    return this.favoritesService.findAll();
+  async findAll(@Request() req: any) {
+    const token = req.headers.authorization.split(' ')[1];
+    const user = await this.authService.getUserByToken(token);
+    return this.favoritesService.findAll(user);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.favoritesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFavoriteDto: UpdateFavoriteDto) {
-    return this.favoritesService.update(+id, updateFavoriteDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete('item/:id')
+  remove(@Param('id') id: string,@Request() req: any) {
+    const token = req.headers.authorization.split(' ')[1];
+    const user = this.authService.getUserByToken(token);
     return this.favoritesService.remove(+id);
   }
 }

@@ -7,6 +7,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { User } from 'src/auth/user.enity';
+import { Item } from 'src/item/entities/item.entity';
 
 @Table({ tableName: 'comments' })
 export class Comment extends Model<Comment> {
@@ -17,7 +18,8 @@ export class Comment extends Model<Comment> {
     allowNull: false,
   })
   id: number;
-
+  
+  @ForeignKey(() => Item)
   @Column({
     type: DataType.INTEGER,
     allowNull: true,
@@ -65,4 +67,7 @@ export class Comment extends Model<Comment> {
 
   @BelongsTo(() => User)
   user: User;
+
+  @BelongsTo(() => Item)
+  item: Item;
 }

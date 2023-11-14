@@ -27,6 +27,12 @@ export class CommentsController {
   async create(@Body() body: any, @Request() req, @Param('id') id: string) {
     const token = req.headers.authorization.split(' ')[1];
     const user = await this.authService.getUserByToken(token);
+    if (!user) {
+      return {
+        message: 'JWT token is invalid',
+        status: 401,
+      };
+    }
     return this.commentsService.create(body, user, id);
   }
 
@@ -39,6 +45,12 @@ export class CommentsController {
   async update(@Param('id') id: string, @Body() body: any, @Request() req) {
     const token = req.headers.authorization.split(' ')[1];
     const user = await this.authService.getUserByToken(token);
+    if (!user) {
+      return {
+        message: 'JWT token is invalid',
+        status: 401,
+      };
+    }
     const checkUser = await this.commentsService.checkUser(+id, user);
     if (!checkUser) {
       return {
@@ -53,6 +65,12 @@ export class CommentsController {
   async remove(@Param('id') id: string, @Request() req) {
     const token = req.headers.authorization.split(' ')[1];
     const user = await this.authService.getUserByToken(token);
+    if (!user) {
+      return {
+        message: 'JWT token is invalid',
+        status: 401,
+      };
+    }
     const checkUser = await this.commentsService.checkUser(+id, user);
     if (!checkUser) {
       return {

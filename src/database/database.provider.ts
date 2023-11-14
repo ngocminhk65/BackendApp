@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import { User } from 'src/auth/user.enity';
 import { Comment } from 'src/comments/entities/comment.entity';
+import { Favorite } from 'src/favorites/entities/favorite.entity';
 import { Item } from 'src/item/entities/item.entity';
 import { Item_chap_images } from 'src/item/entities/item_chap_images.enity';
 import { Item_chaps } from 'src/item/entities/item_chaps.enity';
@@ -20,7 +21,7 @@ export const databaseProviders = [
           timestamps: false,
         },
       });
-      sequelize.addModels([Item, Item_chaps, Item_chap_images, User, Comment]);
+      sequelize.addModels([Item, Item_chaps, Item_chap_images, User, Comment,Favorite]);
       await sequelize.sync();
       return sequelize;
     },

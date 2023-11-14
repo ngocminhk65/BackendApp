@@ -1,5 +1,7 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { Item_chaps } from './item_chaps.enity';
+import { Comment } from 'src/comments/entities/comment.entity';
+import { Favorite } from 'src/favorites/entities/favorite.entity';
 
 @Table
 export class Item extends Model<Item> {
@@ -77,4 +79,10 @@ export class Item extends Model<Item> {
 
   @HasMany(() => Item_chaps)
   item_chaps: Item_chaps[];
+
+  @HasMany(() => Comment)
+  comments: Comment[];
+
+  @HasMany(() => Favorite)
+  favorites: Favorite[];
 }

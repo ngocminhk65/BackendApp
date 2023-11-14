@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { Comment } from 'src/comments/entities/comment.entity';
+import { Favorite } from 'src/favorites/entities/favorite.entity';
 
 @Table
 export class User extends Model<User> {
@@ -50,5 +51,8 @@ export class User extends Model<User> {
   updatedAt: Date;
 
   @HasMany(() => Comment)
-  User: Comment[];
+  comments: Comment[];
+
+  @HasMany(() => Favorite)
+  favorites: Favorite[];
 }

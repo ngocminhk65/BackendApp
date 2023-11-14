@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from './user.enity';
 const bcrypt = require('bcrypt');
@@ -60,8 +60,12 @@ export class AuthService {
     };
   }
   async getUserByToken(token: string) {
-    const userToken = await this.jwtService.verify(token);
-    return await this.getUserByEmail(userToken.email);
+    try {
+      const userToken = await this.jwtService.verify(token);
+      return await this.getUserByEmail(userToken.email);
+    } catch (error) {
+        return null;
+    }
   }
 
   async getUserByEmail(email: string) {
