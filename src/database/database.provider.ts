@@ -21,7 +21,14 @@ export const databaseProviders = [
           timestamps: false,
         },
       });
-      sequelize.addModels([Item, Item_chaps, Item_chap_images, User, Comment,Favorite]);
+      sequelize.addModels([
+        Item,
+        Item_chaps,
+        Item_chap_images,
+        User,
+        Comment,
+        Favorite,
+      ]);
       await sequelize.sync();
       return sequelize;
     },

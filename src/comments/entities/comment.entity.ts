@@ -18,7 +18,7 @@ export class Comment extends Model<Comment> {
     allowNull: false,
   })
   id: number;
-  
+
   @ForeignKey(() => Item)
   @Column({
     type: DataType.INTEGER,

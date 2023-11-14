@@ -7,7 +7,7 @@ import { FavoriteProviders } from './entities/favorite.provider';
 
 @Module({
   controllers: [FavoritesController],
-  providers: [FavoritesService,...FavoriteProviders],
-  imports: [AuthModule,ItemModule]
+  providers: [FavoritesService, ...FavoriteProviders],
+  imports: [AuthModule, ItemModule],
 })
 export class FavoritesModule {}

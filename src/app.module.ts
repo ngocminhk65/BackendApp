@@ -8,7 +8,13 @@ import { CommentsModule } from './comments/comments.module';
 import { FavoritesModule } from './favorites/favorites.module';
 
 @Module({
-  imports: [DatabaseModule, ItemModule, AuthModule, CommentsModule, FavoritesModule],
+  imports: [
+    DatabaseModule,
+    ItemModule,
+    AuthModule,
+    CommentsModule,
+    FavoritesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -64,7 +64,7 @@ export class AuthService {
       const userToken = await this.jwtService.verify(token);
       return await this.getUserByEmail(userToken.email);
     } catch (error) {
-        return null;
+      return null;
     }
   }
 
