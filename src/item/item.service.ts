@@ -95,4 +95,8 @@ export class ItemService {
       listImage: image,
     };
   }
+
+  async getItemByCategory(categoryId: number) {
+    
+  }
 }
