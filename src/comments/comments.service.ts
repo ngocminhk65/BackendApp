@@ -9,7 +9,7 @@ export class CommentsService {
     @Inject('CommentRepository')
     private readonly commentRepository: typeof Comment,
 
-    @Inject('ItemRepository')
+    @Inject('ITEM_REPOSITORY')
     private readonly itemRepository: typeof Item,
   ) {}
 
