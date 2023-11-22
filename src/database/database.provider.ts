@@ -7,6 +7,7 @@ import { Item } from 'src/item/entities/item.entity';
 import { ItemCategory } from 'src/item/entities/item_category.enity';
 import { Item_chap_images } from 'src/item/entities/item_chap_images.enity';
 import { Item_chaps } from 'src/item/entities/item_chaps.enity';
+import { Permission } from 'src/item/entities/permission.enity';
 
 export const databaseProviders = [
   {
@@ -32,6 +33,7 @@ export const databaseProviders = [
         Favorite,
         Category,
         ItemCategory,
+        Permission,
       ]);
       await sequelize.sync();
       return sequelize;

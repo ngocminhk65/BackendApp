@@ -79,4 +79,14 @@ export class AuthService {
     }
     return user;
   }
+
+  // cehcking token is expired or not
+  async checkToken(token: string) {
+    try {
+      const userToken = await this.jwtService.verify(token);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 }

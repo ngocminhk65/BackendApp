@@ -6,13 +6,20 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { ItemService } from './item.service';
-import { CreateItemDto } from './dto/create-item.dto';
+import { JwtStrategy } from 'src/auth/jwt.strategy';
+import { AuthService } from 'src/auth/auth.service';
 
+@UseGuards(JwtStrategy)
 @Controller('item')
 export class ItemController {
-  constructor(private readonly itemService: ItemService) {}
+  constructor(
+    private readonly itemService: ItemService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Get()
   async findAll() {
@@ -49,13 +56,36 @@ export class ItemController {
   }
 
   @Get('chap/:id')
-  async getChapDetail(@Param('id') id: string) {
-    const data = await this.itemService.getChapDetail(+id);
+  async getChapDetail(@Param('id') id: string, @Request() req) {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return {
+        status: 401,
+        success: false,
+        message: 'JWT token is required',
+      };
+    }
+    if (!this.authService.checkToken(token)) {
+      return {
+        status: 401,
+        success: false,
+        message: 'JWT token is expired',
+      };
+    }
+    const user = await this.authService.getUserByToken(token);
+    if (!user) {
+      return {
+        status: 401,
+        success: false,
+        message: 'JWT token is invalid',
+      };
+    }
+    const data = await this.itemService.getChapDetail(+id, user.id);
     if (!data) {
       return {
         status: 404,
         success: false,
-        message: 'Not found',
+        message: 'Not found or you not have permission',
       };
     }
     return {
@@ -66,8 +96,33 @@ export class ItemController {
   }
 
   @Get('detail/:id')
-  async findOne(@Param('id') id: string) {
-    const data = await this.itemService.findOne(+id);
+  async findOne(@Param('id') id: string, @Request() req) {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return {
+        status: 401,
+        success: false,
+        message: 'JWT token is required',
+      };
+    }
+    const validToken = await this.authService.checkToken(token);
+    if (!validToken) {
+      return {
+        status: 401,
+        success: false,
+        message: 'JWT token is expired',
+      };
+    }
+    const user = await this.authService.getUserByToken(token);
+    if (!user) {
+      return {
+        status: 401,
+        success: false,
+        message: 'JWT token is invalid',
+      };
+    }
+
+    const data = await this.itemService.findOne(+id, user);
     if (!data) {
       return {
         status: 404,

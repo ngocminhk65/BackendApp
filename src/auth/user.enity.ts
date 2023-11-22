@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { Comment } from 'src/comments/entities/comment.entity';
 import { Favorite } from 'src/favorites/entities/favorite.entity';
+import { Permission } from 'src/item/entities/permission.enity';
 
 @Table
 export class User extends Model<User> {
@@ -55,4 +56,7 @@ export class User extends Model<User> {
 
   @HasMany(() => Favorite)
   favorites: Favorite[];
+
+  @HasMany(() => Permission)
+  permission: Permission[];
 }

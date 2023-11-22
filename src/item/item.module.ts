@@ -1,19 +1,22 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ItemService } from './item.service';
 import { ItemController } from './item.controller';
 import { DatabaseModule } from 'src/database/database.module';
-import { ItemProvider } from './entities/item.provider';
+import { ItemProvider, PermissionProvider } from './entities/item.provider';
 import { ItemChapImageProvider } from './entities/item_chap_images.provider';
 import { ItemChapProvider } from './entities/item_chaps.provider';
+import { AuthModule } from 'src/auth/auth.module';
 
+@Global()
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, AuthModule],
   controllers: [ItemController],
   providers: [
     ItemService,
     ...ItemProvider,
     ...ItemChapImageProvider,
     ...ItemChapProvider,
+    ...PermissionProvider,
   ],
   exports: [...ItemProvider, ...ItemChapImageProvider, ...ItemChapProvider],
 })

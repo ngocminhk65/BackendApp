@@ -87,6 +87,6 @@ export class Item extends Model<Item> {
   @HasMany(() => Favorite)
   favorites: Favorite[];
 
-  @HasMany(()=> ItemCategory)
+  @HasMany(() => ItemCategory)
   item_category: ItemCategory[];
 }

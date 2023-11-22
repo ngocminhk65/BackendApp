@@ -3,7 +3,8 @@ import { Item } from './entities/item.entity';
 import { Injectable, Inject } from '@nestjs/common';
 import { Item_chaps } from './entities/item_chaps.enity';
 import { Item_chap_images } from './entities/item_chap_images.enity';
-import { Op } from 'sequelize';
+import { Op, where } from 'sequelize';
+import { Permission } from './entities/permission.enity';
 @Injectable()
 export class ItemService {
   constructor(
@@ -31,21 +32,43 @@ export class ItemService {
     return data;
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, user: any) {
+    const userId = user.id;
     const manga = await this.itemRepository.findOne({
       where: { id: id },
     });
-    const chap = await this.getChapOrderByOrders(id);
+    const chap = await this.getChapOrderByOrders(id, userId);
     return {
       mangaDetail: manga,
       listChap: chap,
     };
   }
-  async getChapOrderByOrders(itemId: number) {
-    return this.itemChapRepository.findAll({
+  async getChapOrderByOrders(itemId: number, userId: any) {
+    const query = await this.itemChapRepository.findAll({
       where: { item_id: itemId },
+      include: [
+        {
+          model: Permission,
+          required: false,
+          where: { user_id: userId },
+        },
+      ],
       order: [['orders', 'DESC']],
     });
+    const data = query.map((item) => {
+      return {
+        id: item.id,
+        item_id: item.item_id,
+        name: item.name,
+        orders: item.orders,
+        is_delete: item.is_delete,
+        created_at: item.created_at,
+        updated_at: item.updated_at,
+        deleted_at: item.deleted_at,
+        canRead: item.permission.length > 0 ? true : false,
+      };
+    });
+    return data;
   }
 
   async getImageOrderByOrders(chapId: number) {
@@ -82,7 +105,20 @@ export class ItemService {
     return nextChap.id;
   }
 
-  async getChapDetail(chapId: number) {
+  async getChapDetail(chapId: number, userId: any) {
+    const checking = await this.itemChapRepository.findOne({
+      where: { id: chapId },
+      include: [
+        {
+          model: Permission,
+          where: { user_id: userId },
+        },
+      ],
+    });
+    if (!checking) {
+      return;
+    }
+
     const nextChapterId = await this.getNextChapterId(chapId);
     const previosChapterId = await this.getPreviosChapterId(chapId);
 
@@ -96,7 +132,5 @@ export class ItemService {
     };
   }
 
-  async getItemByCategory(categoryId: number) {
-    
-  }
+  async getItemByCategory(categoryId: number) {}
 }

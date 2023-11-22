@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { UserProvider } from './user.provider';
 import { DatabaseModule } from 'src/database/database.module';
 import { JwtGuard } from './jwt.gaurd';
+import { ItemModule } from 'src/item/item.module';
 
 @Module({
   imports: [

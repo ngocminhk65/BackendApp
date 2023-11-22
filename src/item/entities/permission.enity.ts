@@ -6,11 +6,11 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { Item } from './item.entity';
-import { Category } from './categoty.enity';
+import { User } from 'src/auth/user.enity';
+import { Item_chaps } from './item_chaps.enity';
 
-@Table({ tableName: 'item_categorys' })
-export class ItemCategory extends Model<ItemCategory> {
+@Table({ tableName: 'permission' })
+export class Permission extends Model<Permission> {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -19,19 +19,19 @@ export class ItemCategory extends Model<ItemCategory> {
   })
   id: number;
 
-  @ForeignKey(() => Item)
+  @ForeignKey(() => Item_chaps)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
   })
-  item_id: number;
+  identification_code: number;
 
-  @ForeignKey(() => Category)
+  @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
   })
-  category_id: number;
+  user_id: number;
 
   @Column({
     type: DataType.DATE,
@@ -49,13 +49,11 @@ export class ItemCategory extends Model<ItemCategory> {
 
   @Column({
     type: DataType.DATE,
-    defaultValue: null,
   })
   deleted_at: Date;
 
-  @BelongsTo(() => Item)
-  item: Item;
-
-  @BelongsTo(() => Category)
-  category: Category;
+  @BelongsTo(() => User)
+  user: User;
+  @BelongsTo(() => Item_chaps)
+  item_chaps: Item_chaps;
 }

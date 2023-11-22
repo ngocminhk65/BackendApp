@@ -9,6 +9,7 @@ import {
 } from 'sequelize-typescript';
 import { Item } from './item.entity';
 import { Item_chap_images } from './item_chap_images.enity';
+import { Permission } from './permission.enity';
 
 @Table
 export class Item_chaps extends Model<Item_chaps> {
@@ -69,7 +70,7 @@ export class Item_chaps extends Model<Item_chaps> {
 
   @HasMany(() => Item_chap_images)
   images: Item_chap_images[];
-  // @ForeignKey(() => Item)
-  // @Column
-  // itemId: number
+
+  @HasMany(() => Permission)
+  permission: Permission[];
 }
