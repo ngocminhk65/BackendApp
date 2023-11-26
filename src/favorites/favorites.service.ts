@@ -124,8 +124,10 @@ export class FavoritesService {
           status: 401,
         };
       }
-      if (data.total_comment > 0) {
-        data.total_comment -= 1;
+      if (data.total_like > 0) {
+        data.total_like -= 1;
+      } else {
+        data.total_like = 0;
       }
       data.save();
       return {
