@@ -17,11 +17,19 @@ export class FavoritesService {
       where: {
         id: id,
       },
+      include:[
+        {
+          model:Favorite,
+          where: { user_id: user.id },
+          required: false,
+        }
+      ]
     });
     if (!item) {
       return {
         message: 'Item not found',
         status: 404,
+        success: false,
       };
     }
     const favorite = await this.favoriteRepository.findOne({
@@ -33,7 +41,8 @@ export class FavoritesService {
     if (favorite) {
       return {
         message: 'Item already in your favorite list',
-        status: 401,
+        status: 403,
+        success: false,
       };
     }
     const data = await this.favoriteRepository.create({
@@ -47,10 +56,30 @@ export class FavoritesService {
       item.total_like += 1;
     }
     item.save();
+    const mangaDetail = {
+      id:item.id,
+      title:item.title,
+      description:item.description,
+      total_like:item.total_like,
+      total_comment:item.total_comment,
+      image_path:item.image,
+      created_at:item.created_at,
+      updated_at:item.updated_at,
+      deleted_at:item.deleted_at,
+      is_favorite: true,
+    }
     return {
       message: 'Add favorite success',
       status: 200,
-      data: data,
+      success: true,
+      data: {
+        id: data.id,
+        item_id: data.item_id,
+        user_id: data.user_id,
+        created_at: data.created_at,
+        updated_at: data.updated_at,
+        mangaDetail
+      },
     };
   }
 
@@ -72,29 +101,36 @@ export class FavoritesService {
     };
   }
 
-  async remove(id: number) {
-    const data = await this.favoriteRepository.findOne({
+  async remove(id: number, user: any) {
+    
+    const user_id = user.id;
+    console.log(user);
+    
+    const data = await this.itemRepository.findOne({
       where: {
         id: id,
       },
-    });
-    if (!data) {
+    });    
+    if (data) {
       const remove = await this.favoriteRepository.destroy({
         where: {
-          id: id,
+          item_id: id,
+          user_id: user_id,
         },
       });
-      const item = await this.itemRepository.findOne({
-        where: {
-          id: data.item_id,
-        },
-      });
-      if (item.total_comment > 0) {
-        item.total_comment -= 1;
+      if (!remove) {
+        return {
+          message: 'Remove favorite fail',
+          status: 401,
+        };
       }
-      item.save();
+      if (data.total_comment > 0) {
+        data.total_comment -= 1;
+      }
+      data.save();
       return {
         message: 'Remove favorite success',
+        success: true,
         status: 200,
         data: remove,
       };
@@ -102,6 +138,7 @@ export class FavoritesService {
       return {
         message: 'Remove favorite fail',
         status: 401,
+        success: false,
       };
     }
   }

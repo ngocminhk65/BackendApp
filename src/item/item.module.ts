@@ -6,6 +6,7 @@ import { ItemProvider, PermissionProvider } from './entities/item.provider';
 import { ItemChapImageProvider } from './entities/item_chap_images.provider';
 import { ItemChapProvider } from './entities/item_chaps.provider';
 import { AuthModule } from 'src/auth/auth.module';
+import { FavoritesModule } from 'src/favorites/favorites.module';
 
 @Global()
 @Module({

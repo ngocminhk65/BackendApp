@@ -12,8 +12,9 @@ import {
 import { ItemService } from './item.service';
 import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { AuthService } from 'src/auth/auth.service';
+import { JwtGuard } from 'src/auth/jwt.gaurd';
 
-@UseGuards(JwtStrategy)
+@UseGuards(JwtGuard)
 @Controller('item')
 export class ItemController {
   constructor(
@@ -58,6 +59,16 @@ export class ItemController {
   @Get('chap/:id')
   async getChapDetail(@Param('id') id: string, @Request() req) {
     const token = req.headers.authorization?.split(' ')[1];
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    console.log({token});
+    console.log(id);
+    console.log(req.user);
+    
+    
+    
+    
+
+    
     if (!token) {
       return {
         status: 401,
@@ -98,6 +109,9 @@ export class ItemController {
   @Get('detail/:id')
   async findOne(@Param('id') id: string, @Request() req) {
     const token = req.headers.authorization?.split(' ')[1];
+    const usr = req.user;
+    console.log({ usr });
+
     if (!token) {
       return {
         status: 401,

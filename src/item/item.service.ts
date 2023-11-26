@@ -5,6 +5,7 @@ import { Item_chaps } from './entities/item_chaps.enity';
 import { Item_chap_images } from './entities/item_chap_images.enity';
 import { Op, where } from 'sequelize';
 import { Permission } from './entities/permission.enity';
+import { Favorite } from 'src/favorites/entities/favorite.entity';
 @Injectable()
 export class ItemService {
   constructor(
@@ -34,14 +35,35 @@ export class ItemService {
 
   async findOne(id: number, user: any) {
     const userId = user.id;
+    console.log(id,user.id);
+    
     const manga = await this.itemRepository.findOne({
       where: { id: id },
+      include : [
+        {
+          model:Favorite,
+          where: { user_id: userId },
+          required: false,
+        }
+      ]
     });
     const chap = await this.getChapOrderByOrders(id, userId);
-    return {
-      mangaDetail: manga,
+    
+    const dataResonse = {
+      mangaDetail: {
+        id: manga.id,
+        title: manga.title,
+        description: manga.description,
+        total_like: manga.total_like,
+        image_path: manga.image,
+        created_at: manga.created_at,
+        updated_at: manga.updated_at,
+        deleted_at: manga.deleted_at,
+        is_favorite: manga.favorites.length > 0 ? true : false,
+      },
       listChap: chap,
     };
+    return dataResonse;
   }
   async getChapOrderByOrders(itemId: number, userId: any) {
     const query = await this.itemChapRepository.findAll({
@@ -99,20 +121,28 @@ export class ItemService {
     const chap = await this.itemChapRepository.findOne({
       where: { id: chapId },
     });
+    console.log({chap});
+    
     const nextChap = await this.itemChapRepository.findOne({
       where: { item_id: chap.item_id, orders: chap.orders + 1 },
     });
+    console.log({nextChap});
+    if(!nextChap) {
+      return chap.id;
+    }
+    
     return nextChap.id;
   }
 
   async getChapDetail(chapId: number, userId: any) {
+    
     const checking = await this.itemChapRepository.findOne({
       where: { id: chapId },
       include: [
         {
           model: Permission,
           where: { user_id: userId },
-        },
+        }
       ],
     });
     if (!checking) {
