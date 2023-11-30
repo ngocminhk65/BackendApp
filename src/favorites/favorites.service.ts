@@ -17,13 +17,13 @@ export class FavoritesService {
       where: {
         id: id,
       },
-      include:[
+      include: [
         {
-          model:Favorite,
+          model: Favorite,
           where: { user_id: user.id },
           required: false,
-        }
-      ]
+        },
+      ],
     });
     if (!item) {
       return {
@@ -57,17 +57,17 @@ export class FavoritesService {
     }
     item.save();
     const mangaDetail = {
-      id:item.id,
-      title:item.title,
-      description:item.description,
-      total_like:item.total_like,
-      total_comment:item.total_comment,
-      image_path:item.image,
-      created_at:item.created_at,
-      updated_at:item.updated_at,
-      deleted_at:item.deleted_at,
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      total_like: item.total_like,
+      total_comment: item.total_comment,
+      image_path: item.image,
+      created_at: item.created_at,
+      updated_at: item.updated_at,
+      deleted_at: item.deleted_at,
       is_favorite: true,
-    }
+    };
     return {
       message: 'Add favorite success',
       status: 200,
@@ -78,7 +78,7 @@ export class FavoritesService {
         user_id: data.user_id,
         created_at: data.created_at,
         updated_at: data.updated_at,
-        mangaDetail
+        mangaDetail,
       },
     };
   }
@@ -102,15 +102,14 @@ export class FavoritesService {
   }
 
   async remove(id: number, user: any) {
-    
     const user_id = user.id;
     console.log(user);
-    
+
     const data = await this.itemRepository.findOne({
       where: {
         id: id,
       },
-    });    
+    });
     if (data) {
       const remove = await this.favoriteRepository.destroy({
         where: {

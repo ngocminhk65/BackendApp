@@ -35,20 +35,20 @@ export class ItemService {
 
   async findOne(id: number, user: any) {
     const userId = user.id;
-    console.log(id,user.id);
-    
+    console.log(id, user.id);
+
     const manga = await this.itemRepository.findOne({
       where: { id: id },
-      include : [
+      include: [
         {
-          model:Favorite,
+          model: Favorite,
           where: { user_id: userId },
           required: false,
-        }
-      ]
+        },
+      ],
     });
     const chap = await this.getChapOrderByOrders(id, userId);
-    
+
     const dataResonse = {
       mangaDetail: {
         id: manga.id,
@@ -121,28 +121,27 @@ export class ItemService {
     const chap = await this.itemChapRepository.findOne({
       where: { id: chapId },
     });
-    console.log({chap});
-    
+    console.log({ chap });
+
     const nextChap = await this.itemChapRepository.findOne({
       where: { item_id: chap.item_id, orders: chap.orders + 1 },
     });
-    console.log({nextChap});
-    if(!nextChap) {
+    console.log({ nextChap });
+    if (!nextChap) {
       return chap.id;
     }
-    
+
     return nextChap.id;
   }
 
   async getChapDetail(chapId: number, userId: any) {
-    
     const checking = await this.itemChapRepository.findOne({
       where: { id: chapId },
       include: [
         {
           model: Permission,
           where: { user_id: userId },
-        }
+        },
       ],
     });
     if (!checking) {

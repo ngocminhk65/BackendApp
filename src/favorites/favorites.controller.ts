@@ -49,13 +49,13 @@ export class FavoritesController {
   @Delete('item/:id')
   async remove(@Param('id') id: string, @Request() req: any) {
     const token = req.headers.authorization.split(' ')[1];
-    const user =await this.authService.getUserByToken(token);
-    if (!user ) {
+    const user = await this.authService.getUserByToken(token);
+    if (!user) {
       return {
         message: 'JWT token is invalid',
         status: 401,
       };
     }
-    return this.favoritesService.remove(+id,user);
+    return this.favoritesService.remove(+id, user);
   }
 }

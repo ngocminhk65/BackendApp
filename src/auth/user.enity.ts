@@ -51,6 +51,11 @@ export class User extends Model<User> {
   })
   updatedAt: Date;
 
+  @Column({
+    type: DataType.BIGINT,
+  })
+  price: number;
+
   @HasMany(() => Comment)
   comments: Comment[];
 

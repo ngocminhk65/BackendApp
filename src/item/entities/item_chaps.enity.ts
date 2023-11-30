@@ -68,6 +68,12 @@ export class Item_chaps extends Model<Item_chaps> {
   })
   deleted_at: Date;
 
+  @Column({
+    type: DataType.BIGINT,
+    allowNull: true,
+  })
+  price: number;
+
   @HasMany(() => Item_chap_images)
   images: Item_chap_images[];
 

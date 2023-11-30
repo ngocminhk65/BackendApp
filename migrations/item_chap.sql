@@ -1,0 +1,1 @@
+alter table item_chaps add column price bigint(20) not null default 200;

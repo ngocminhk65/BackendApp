@@ -89,4 +89,62 @@ export class AuthService {
       return false;
     }
   }
+  async checkUserPrice(user: User, price: number) {
+    if (user.price < price) {
+      return {
+        canBuy: false,
+        messeage: 'You do not have enough money to buy this chapter',
+      };
+    }
+    return {
+      canBuy: true,
+      messeage: 'You can buy this chapter',
+    };
+  }
+
+  async addPrice(userId: number, price: any) {
+    try {
+      if (price == undefined || price == null) {
+        return {
+          status: 400,
+          success: false,
+          message: 'price is required',
+        };
+      }
+      if (price <= 0) {
+        return {
+          status: 400,
+          success: false,
+          message: 'price must be greater than 0',
+        };
+      }
+      const user = await this.userRepository.findOne({
+        where: {
+          id: userId,
+        },
+      });
+      if (!user) {
+        return {
+          status: 404,
+          success: false,
+          message: 'user not found',
+        };
+      }
+      let intPrice = parseInt(price);
+      user.price = user.price + intPrice;
+      await user.save();
+      return {
+        status: 200,
+        success: true,
+        message: 'add price success',
+        data: user,
+      };
+    } catch (error) {
+      return {
+        status: 500,
+        success: false,
+        message: error,
+      };
+    }
+  }
 }
