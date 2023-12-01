@@ -60,6 +60,7 @@ export class ItemService {
         updated_at: manga.updated_at,
         deleted_at: manga.deleted_at,
         is_favorite: manga.favorites.length > 0 ? true : false,
+
       },
       listChap: chap,
     };
@@ -88,6 +89,7 @@ export class ItemService {
         updated_at: item.updated_at,
         deleted_at: item.deleted_at,
         canRead: item.permission.length > 0 ? true : false,
+        price: item.price,
       };
     });
     return data;
