@@ -96,6 +96,8 @@ export class AuthService {
         messeage: 'You do not have enough money to buy this chapter',
       };
     }
+    user.price = user.price - price;
+    user.save();
     return {
       canBuy: true,
       messeage: 'You can buy this chapter',
