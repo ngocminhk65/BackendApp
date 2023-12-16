@@ -1,5 +1,14 @@
-import { Body, Controller, Request, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Request,
+  Post,
+  UseGuards,
+  Get,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from './jwt.gaurd';
 
 @Controller('auth')
 export class AuthController {
@@ -60,5 +69,47 @@ export class AuthController {
   @Post('logout')
   async logout(@Request() req) {
     req.logout();
+  }
+
+  @UseGuards(JwtGuard)
+  @Post('tranfer_price')
+  async tranferPrice(@Body() body: any, @Request() req) {
+    const token = req.headers.authorization.split(' ')[1];
+    const user = await this.authService.getUserByToken(token);
+    if (!user) {
+      return {
+        message: 'User not found',
+        status: 401,
+      };
+    }
+    const { price, email } = body;
+    if (price === undefined || price === '') {
+      return {
+        message: 'Price is required',
+        status: 401,
+      };
+    }
+    if (email === undefined || email === '') {
+      return {
+        message: 'Email is required',
+        status: 401,
+      };
+    }
+    const data = await this.authService.tranferPrice(email, price, user);
+    return data;
+  }
+  @UseGuards(JwtGuard)
+  @Get('list_user')
+  async listUser(@Request() req) {
+    const token = req.headers.authorization.split(' ')[1];
+    const user = await this.authService.getUserByToken(token);
+    if (!user) {
+      return {
+        message: 'User not found',
+        status: 401,
+      };
+    }
+    const data = await this.authService.getListUser();
+    return data;
   }
 }

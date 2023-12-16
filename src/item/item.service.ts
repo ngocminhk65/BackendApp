@@ -60,7 +60,6 @@ export class ItemService {
         updated_at: manga.updated_at,
         deleted_at: manga.deleted_at,
         is_favorite: manga.favorites.length > 0 ? true : false,
-
       },
       listChap: chap,
     };

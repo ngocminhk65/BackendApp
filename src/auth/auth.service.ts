@@ -1,6 +1,7 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from './user.enity';
+import { CreatedAt } from 'sequelize-typescript';
 const bcrypt = require('bcrypt');
 const salt = 10;
 
@@ -140,6 +141,103 @@ export class AuthService {
         success: true,
         message: 'add price success',
         data: user,
+      };
+    } catch (error) {
+      return {
+        status: 500,
+        success: false,
+        message: error,
+      };
+    }
+  }
+  // get list user
+  async getListUser() {
+    try {
+      const listUser = await this.userRepository.findAll();
+      if (!listUser) {
+        return {
+          status: 404,
+          success: false,
+          message: 'user not found',
+        };
+      }
+      const resonse = listUser.map((user) => {
+        return {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          price: user.price,
+          CreatedAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          avatar_path: user.avatar_path,
+        };
+      });
+      return {
+        status: 200,
+        success: true,
+        message: 'get list user success',
+        data: resonse,
+      };
+    } catch (error) {
+      return {
+        status: 500,
+        success: false,
+        message: error,
+      };
+    }
+  }
+  async tranferPrice(userEmail: any, priceTranfer: any, user: User) {
+    try {
+      if (priceTranfer == undefined || priceTranfer == null) {
+        return {
+          status: 400,
+          success: false,
+          message: 'price is required',
+        };
+      }
+      if (priceTranfer <= 0) {
+        return {
+          status: 400,
+          success: false,
+          message: 'price must be greater than 0',
+        };
+      }
+      if (user.price < priceTranfer) {
+        return {
+          status: 400,
+          success: false,
+          message: 'You do not have enough money to transfer',
+        };
+      }
+      const userTranfer = await this.userRepository.findOne({
+        where: {
+          email: userEmail,
+        },
+      });
+      if (!userTranfer) {
+        return {
+          status: 404,
+          success: false,
+          message: 'user tranfer not found',
+        };
+      }
+      user.price = user.price - parseInt(priceTranfer);
+      userTranfer.price = userTranfer.price + parseInt(priceTranfer);
+      await user.save();
+      await userTranfer.save();
+      return {
+        status: 200,
+        success: true,
+        message: 'tranfer price success',
+        data: {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          price: user.price,
+          CreatedAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          avatar_path: user.avatar_path,
+        },
       };
     } catch (error) {
       return {
